@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import CountrySelect, { DEFAULT_COUNTRY } from "../country/CountrySelect";
 import LanguageSelect, { DEFAULT_LANGUAGE } from "../language/LanguageSelect";
 import CurrencySelect, { DEFAULT_CURRENCY } from "../currency/CurrencySelect";
+import { getFlag } from "../country/CountrySelectOption";
 
 /* --- [TASK] ---
 Changes on modal are only applied on SAVE
@@ -120,9 +121,14 @@ const SettingsSelector = (): JSX.Element => {
     currency: DEFAULT_CURRENCY,
     language: DEFAULT_LANGUAGE
   });
+  const [prevSelectedCountry, setPrevSelectedCountry] = React.useState<CountryType>({
+    country: DEFAULT_COUNTRY,
+    currency: DEFAULT_CURRENCY,
+    language: DEFAULT_LANGUAGE
+  });
 
 
-  const handleCountryChange = (key: keyof CountryType, value: { name: string, code: string } | string) => {
+  const handleCountryChange = (key: keyof CountryType, value: { code: string; name: string; } | string) => {
     setSelectedCountry((prevConfig) => ({
       ...prevConfig,
       [key]: value
@@ -136,9 +142,16 @@ const SettingsSelector = (): JSX.Element => {
   const handleOpen = () => {
     setModalIsOpen(true);
   };
+
   const handleClose = () => {
     setModalIsOpen(false);
+    setSelectedCountry(prevSelectedCountry)
   };
+
+  const handleSave = () => {
+    setModalIsOpen(false);
+    setPrevSelectedCountry(selectedCountry)
+  }
 
   const button = () => {
     // Increase render count.
@@ -147,10 +160,14 @@ const SettingsSelector = (): JSX.Element => {
     // Log current render count.
     console.log("Render count of button is: " + counter.current);
 
+
     /* Button */
     return (
       <button onClick={handleOpen}>
-        {selectedCountry.country.name} - ({selectedCountry.currency} - {selectedCountry.language})
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <img src={getFlag(selectedCountry.country.code)} alt="Flag" height="15px" style={{ marginRight: '7px' }} />
+          {selectedCountry.country.name} - ({selectedCountry.currency} - {selectedCountry.language})
+        </div>
       </button>
     );
   };
@@ -175,7 +192,11 @@ const SettingsSelector = (): JSX.Element => {
         <LanguageSelect language={selectedCountry.language} onChange={handleCountryChange} />
 
         {/* Close button */}
-        <button onClick={handleClose}>Close</button>
+        <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginTop: '20px' }}>
+          <button onClick={handleSave}>Save</button>
+          <button onClick={handleClose}>Close</button>
+        </div>
+
       </Modal>
     </div>
   );

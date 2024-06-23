@@ -3,7 +3,7 @@ import Select from "react-select";
 import { CountryCodeProps, CountryType } from "../settings/SettingsSelector";
 
 // Props
-interface CurrencySelectProps {
+export interface CurrencySelectProps {
   value?: string;
   onChange: (key: keyof CountryType, value: CountryCodeProps | string) => void;
 }
@@ -36,14 +36,14 @@ const CurrencySelect = ({
 
   // Render
   return (
-    <div>
+    <div style={{ marginBottom: '10px' }}>
       <label>
         Currency
         <Select
           options={data}
           defaultValue={defaultValue}
           onChange={(newValue) => {
-            onChange('language', newValue!.value);
+            onChange('currency', newValue!.value);
           }}
         />
       </label>

@@ -19,11 +19,25 @@ FURTHER DETAILS
 - Flags appearing on the `SettingsSelector`-Button is optional
 --- [TASK] --- */
 
+export const getFlag = (code: string) => {
+  return `https://catamphetamine.gitlab.io/country-flag-icons/3x2/${code}.svg`
+}
 // Component
-export const CountrySelectOption = (props: OptionProps<any>) => {
+export const CountrySelectOption = (props: OptionProps<{
+  value: {
+    code: string;
+    name: string;
+  };
+  label: string;
+}>) => {
+  const { data } = props
   return (
+
     <div>
-      <components.Option {...props} />
+      <components.Option {...props}>
+        <img src={getFlag(data.value.code)} alt="Flag" height="15px" style={{ marginRight: '7px' }} />
+        {data.label}
+      </components.Option>
     </div>
   );
 };

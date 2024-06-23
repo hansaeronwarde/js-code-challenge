@@ -1,10 +1,10 @@
 import ISO_6391_Languages from "iso-639-1";
 
-import Select, { SingleValue } from "react-select";
+import Select from "react-select";
 import { CountryCodeProps, CountryType } from "../settings/SettingsSelector";
 
 // Props
-interface LanguageSelectProps {
+export interface LanguageSelectProps {
   language?: string;
   onChange: (key: keyof CountryType, value: CountryCodeProps | string) => void;
 }
@@ -39,7 +39,7 @@ const LanguageSelect = ({
 
   // Render
   return (
-    <div>
+    <div style={{ marginBottom: '10px' }}>
       <label>
         Language
         <Select
