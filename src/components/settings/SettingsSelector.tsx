@@ -93,13 +93,34 @@ FURTHER DETAILS
 - Downgrading to React 17 is not an option 😉
 --- [TASK] --- */
 
+
+
+export interface CountryType {
+  country: typeof DEFAULT_COUNTRY,
+  currency: string,
+  language: string
+}
+
+
 // Component
 const SettingsSelector = (): JSX.Element => {
   // States
-  const [modalIsOpen, setModalIsOpen] = React.useState<any>(false);
-  const [selectedCountry, setCountry] = React.useState<any>(DEFAULT_COUNTRY);
-  const [selectedCurrency, setCurrency] = React.useState<any>(DEFAULT_CURRENCY);
-  const [selectedLanguage, setLanguage] = React.useState<any>(DEFAULT_LANGUAGE);
+  const [modalIsOpen, setModalIsOpen] = React.useState<boolean>(false);
+  // const [selectedCountry, setCountry] = React.useState<any>(DEFAULT_COUNTRY);
+  // const [selectedCurrency, setCurrency] = React.useState<any>(DEFAULT_CURRENCY);
+  // const [selectedLanguage, setLanguage] = React.useState<any>(DEFAULT_LANGUAGE);
+  const [selectedCountry, setSelectedCountry] = React.useState<CountryType>({
+    country: DEFAULT_COUNTRY,
+    currency: DEFAULT_CURRENCY,
+    language: DEFAULT_LANGUAGE
+  });
+
+  const handleCountryChange = (key: keyof CountryType, value: typeof DEFAULT_COUNTRY | string) => {
+    setSelectedCountry((prevConfig) => ({
+      ...prevConfig,
+      [key]: value
+    }))
+  }
 
   // Render Counter
   const counter = useRef(0);
@@ -122,7 +143,7 @@ const SettingsSelector = (): JSX.Element => {
     /* Button */
     return (
       <button onClick={handleOpen}>
-        {selectedCountry.name} - ({selectedCurrency} - {selectedLanguage})
+        {selectedCountry.country.name} - ({selectedCountry.currency} - {selectedCountry.language})
       </button>
     );
   };
@@ -130,7 +151,7 @@ const SettingsSelector = (): JSX.Element => {
   // Render
   return (
     <div>
-      {button()}
+      {!modalIsOpen && button()}
 
       {/* Modal */}
       <Modal isOpen={modalIsOpen}>
@@ -138,13 +159,13 @@ const SettingsSelector = (): JSX.Element => {
         <h2>Select your region, currency and language.</h2>
 
         {/* Country */}
-        <CountrySelect value={selectedCountry} onChange={setCountry} />
+        <CountrySelect value={selectedCountry.country} onChange={handleCountryChange} />
 
         {/* Currency */}
-        <CurrencySelect value={selectedCurrency} onChange={setCurrency} />
+        <CurrencySelect value={selectedCountry.currency} onChange={handleCountryChange} />
 
         {/* Language */}
-        <LanguageSelect language={selectedLanguage} onChange={setLanguage} />
+        <LanguageSelect language={selectedCountry.language} onChange={handleCountryChange} />
 
         {/* Close button */}
         <button onClick={handleClose}>Close</button>
