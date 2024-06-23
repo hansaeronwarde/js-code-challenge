@@ -1,12 +1,11 @@
 import CurrencyData from "currency-codes/data";
 import Select from "react-select";
-import { DEFAULT_COUNTRY } from "../country/CountrySelect";
-import { CountryType } from "../settings/SettingsSelector";
+import { CountryCodeProps, CountryType } from "../settings/SettingsSelector";
 
 // Props
 interface CurrencySelectProps {
   value?: string;
-  onChange: (key: keyof CountryType, value: typeof DEFAULT_COUNTRY | string) => void;
+  onChange: (key: keyof CountryType, value: CountryCodeProps | string) => void;
 }
 
 
@@ -23,6 +22,9 @@ const CurrencySelect = ({
   value = DEFAULT_CURRENCY,
   onChange,
 }: CurrencySelectProps) => {
+
+
+
   // Prepare data
   const data = (CurrencyData as Currency[]).map(({ code, currency }) => {
     return {
@@ -41,7 +43,7 @@ const CurrencySelect = ({
           options={data}
           defaultValue={defaultValue}
           onChange={(newValue) => {
-            console.log(newValue)
+            onChange('language', newValue!.value);
           }}
         />
       </label>

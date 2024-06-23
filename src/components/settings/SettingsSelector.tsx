@@ -95,8 +95,14 @@ FURTHER DETAILS
 
 
 
+
+export interface CountryCodeProps {
+  code: string
+  name: string
+}
+
 export interface CountryType {
-  country: typeof DEFAULT_COUNTRY,
+  country: CountryCodeProps,
   currency: string,
   language: string
 }
@@ -115,7 +121,8 @@ const SettingsSelector = (): JSX.Element => {
     language: DEFAULT_LANGUAGE
   });
 
-  const handleCountryChange = (key: keyof CountryType, value: typeof DEFAULT_COUNTRY | string) => {
+
+  const handleCountryChange = (key: keyof CountryType, value: { name: string, code: string } | string) => {
     setSelectedCountry((prevConfig) => ({
       ...prevConfig,
       [key]: value
