@@ -4,6 +4,8 @@ import CountrySelect, { DEFAULT_COUNTRY } from "../country/CountrySelect";
 import LanguageSelect, { DEFAULT_LANGUAGE } from "../language/LanguageSelect";
 import CurrencySelect, { DEFAULT_CURRENCY } from "../currency/CurrencySelect";
 import { getFlag } from "../country/CountrySelectOption";
+import styles from './SettingsSelector.module.css';
+
 
 /* --- [TASK] ---
 Changes on modal are only applied on SAVE
@@ -109,6 +111,8 @@ export interface CountryType {
 }
 
 
+
+
 // Component
 const SettingsSelector = (): JSX.Element => {
   // States
@@ -164,10 +168,8 @@ const SettingsSelector = (): JSX.Element => {
     /* Button */
     return (
       <button onClick={handleOpen}>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <img src={getFlag(selectedCountry.country.code)} alt="Flag" height="15px" style={{ marginRight: '7px' }} />
-          {selectedCountry.country.name} - ({selectedCountry.currency} - {selectedCountry.language})
-        </div>
+        <img src={getFlag(selectedCountry.country.code)} alt="Flag" height="15px" style={{ marginRight: '7px' }} />
+        {selectedCountry.country.name} - ({selectedCountry.currency} - {selectedCountry.language})
       </button>
     );
   };
@@ -178,7 +180,7 @@ const SettingsSelector = (): JSX.Element => {
       {!modalIsOpen && button()}
 
       {/* Modal */}
-      <Modal isOpen={modalIsOpen}>
+      <Modal isOpen={modalIsOpen} className={styles.modalContent} overlayClassName={styles.modalOverlay}>
         {/* Header */}
         <h2>Select your region, currency and language.</h2>
 
@@ -192,7 +194,7 @@ const SettingsSelector = (): JSX.Element => {
         <LanguageSelect language={selectedCountry.language} onChange={handleCountryChange} />
 
         {/* Close button */}
-        <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginTop: '20px' }}>
+        <div className={styles.modalButtonContainer}>
           <button onClick={handleSave}>Save</button>
           <button onClick={handleClose}>Close</button>
         </div>
